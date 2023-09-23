@@ -1,0 +1,70 @@
+#include <stdio.h>
+#include <stdlib.h> 
+void divide(int *arr, int si, int ei);
+void conquer(int *arr, int si, int mid, int ei);
+
+int main() {
+    int size;
+    printf("Enter the size of an array: ");
+    scanf("%d", &size);
+    int arr[size];
+    printf("Enter the elements of an array: ");
+    for(int i = 0; i < size; i++) {
+        scanf("%d", &arr[i]);
+    }
+    divide(arr, 0, size - 1);
+   
+    printf("Sorted array: ");
+    for(int i = 0; i < size; i++) {
+        printf("%d ", arr[i]);
+    }
+    
+    return 0;
+}
+
+void divide(int *arr, int si, int ei) {
+    if (si < ei) { 
+        int mid = si + (ei - si) / 2;
+        divide(arr, si, mid);
+        divide(arr, mid + 1, ei);
+        conquer(arr, si, mid, ei);
+    }
+}
+
+void conquer(int *arr, int si, int mid, int ei) {
+    int i = si;
+    int j = mid + 1;
+    int k = si;
+    
+    // Dynamically allocate memory for the temporary array
+    int *b = (int *)malloc((ei - si + 1) * sizeof(int));
+    
+    while(i <= mid && j <= ei) {
+        if(arr[i] <= arr[j]) {
+            b[k] = arr[i];
+            i++;k++;
+        } else {
+            b[k] = arr[j];
+            j++;k++;
+        }
+       // k++;
+    }
+    
+    while(i <= mid) {
+        b[k] = arr[i];
+        i++;
+        k++;
+    }
+    while(j <= ei) {
+        b[k] = arr[j];
+        j++;
+        k++;
+    }
+    
+    for(k = si; k <= ei; k++) {
+        arr[k] = b[k];
+    }
+    
+    // Free the dynamically allocated memory
+    free(b);
+}
