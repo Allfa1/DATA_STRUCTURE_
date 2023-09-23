@@ -1,0 +1,39 @@
+//Linear Search
+#include <stdio.h>
+int linrar_search(int *arr, int size, int key);
+int main() 
+{
+    int size,key,result;
+    printf("Enter the  size of an array\n");
+    scanf("%d", &size);
+    int arr[size];
+    printf("Enter the elemts of an array: ");
+    for(int i = 0; i< size; i++)
+    {
+        scanf("%d", &arr[i]);
+    }
+    printf("Enter the elemts to search in an array:");
+    scanf("%d", &key);
+    result = linrar_search(arr, size, key);
+    return 0;
+}
+int linrar_search(int arr[], int size, int key)
+{
+    int found =0;
+    while (found < size)
+    {
+        if (arr[found] == key)
+        {
+            printf("Searched elemt is found at index %d",found);
+            break;
+        }
+        else
+        {
+            found ++;
+        }
+    }
+     printf("searched elemt is not found in an array");
+
+    return 0;
+}
+       
