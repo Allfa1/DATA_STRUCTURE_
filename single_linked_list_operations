@@ -1,0 +1,341 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int data;
+    struct node *link;
+};
+
+void insert_at_last(struct node **head_ref, int new_data)
+{
+    struct node *new_node = malloc(sizeof(struct node));
+    if (new_node == NULL)
+    {
+        printf("node is not created:)\n");
+    }
+    else
+    {
+        new_node->data = new_data;
+        new_node->link = NULL;
+        if (*head_ref == NULL)
+        {
+            *head_ref = new_node;
+            printf("node inserted at last successfully\n");
+        }
+        else
+        {
+            struct node *temp = *head_ref;
+            while (temp->link != NULL)
+            {
+                temp = temp->link;
+            }
+            temp->link = new_node;
+            printf("node added successfully at last\n");
+        }
+    }
+}
+
+void insert_at_first(struct node **head, int data1)
+{
+    struct node *new_node = malloc(sizeof(struct node));
+    if (new_node == NULL)
+    {
+        printf("node is not created:)\n");
+    }
+    else
+    {
+        new_node->data = data1;
+        new_node->link = NULL;
+        if (*head == NULL)
+        {
+            *head = new_node;
+            printf("node added successfully at first\n");
+        }
+        else
+        {
+            new_node->link = *head;
+            *head = new_node;
+            printf("node added successfully at first\n");
+        }
+    }
+}
+
+void insert_after(struct node **head, int given_data, int new_data)
+{
+    struct node *temp = *head;
+    if (*head == NULL)
+    {
+        printf("list is empty, cannot perform insert after operation :(\n");
+    }
+    else
+    {
+        while (temp != NULL)
+        {
+            if (temp->data != given_data)
+            {
+                temp = temp->link;
+            }
+            else
+            {
+                struct node *new_node = malloc(sizeof(struct node));
+                if (new_node == NULL)
+                {
+                    printf("node is not created:(\n");
+                    break;
+                }
+                new_node->data = new_data;
+                new_node->link = temp->link;
+                temp->link = new_node;
+                printf("node added after a given data successfully\n");
+                break;
+            }
+        }
+        if (temp == NULL)
+        {
+            printf("Given data not found in the list\n");
+        }
+    }
+}
+
+void insert_before(struct node **head, int given_data, int new_data1)
+{
+    struct node *temp = *head;
+    if (*head == NULL)
+    {
+        printf("list is empty, cannot perform insert before operation :(\n");
+    }
+    else
+    {
+        struct node *prev = NULL;
+        while (temp != NULL)
+        {
+            if (temp->data != given_data)
+            {
+                prev = temp;
+                temp = temp->link;
+            }
+            else
+            {
+                struct node *new_node = malloc(sizeof(struct node));
+                if (new_node == NULL)
+                {
+                    printf("node is not created:(\n");
+                    break;
+                }
+                new_node->data = new_data1;
+                new_node->link = temp;
+                if (prev == NULL)
+                {
+                    *head = new_node;
+                }
+                else
+                {
+                    prev->link = new_node;
+                }
+                printf("node added before the given data successfully\n");
+                break;
+            }
+        }
+        if (temp == NULL)
+        {
+            printf("Given data not found in the list\n");
+        }
+    }
+}
+void search_element(struct node **head,int key)
+{
+    struct node *temp = *head;
+    if(*head == NULL)
+    {
+        printf("List is empty,cant find element in a list:\n");
+    }
+    else
+    {
+        int position = 1; // Initialize position to 1
+        while(temp -> link != NULL)
+        {
+            if (temp -> data == key)
+            {
+               printf("Element %d found at position %d.\n", key, position);
+                return; // Element found, exit the function
+            }
+            else
+            {
+                temp = temp->link;
+            position++;
+            }
+            printf("Element %d not found in the list.\n", key);
+        }
+    }
+    
+    
+}
+void sort_list(struct node **head)
+{
+    if (*head == NULL)
+    {
+        printf("List is empty, cannot sort the list\n");
+    }
+    else
+    {
+        struct node *current = *head;
+        struct node *index = NULL;
+        int temp;
+
+        while (current != NULL)
+        {
+            index = current->link;
+            while (index != NULL)
+            {
+                if (current->data > index->data)
+                {
+                    temp = current->data;
+                    current->data = index->data;
+                    index->data = temp;
+                }
+                index = index->link;
+            }
+            current = current->link;
+        }
+
+        printf("Sorted list is: \n");
+        current = *head; // Reset current to the beginning of the list
+        while (current != NULL)
+        {
+            printf("%d ", current->data);
+            current = current->link;
+        }
+        printf("\n");
+    }
+}
+void delete_at_first(struct node **head)
+{
+    if(*head == NULL)
+    {
+        printf("List is empty canot performorm delete at first node operation\n");
+    }
+    else
+    {
+        struct node *temp = *head;
+        *head = (*head) -> link;
+        free(temp);
+        printf("Deleted first node succesfuuly\n");
+    }
+}
+void delete_at_last(struct node **head)
+{
+    if (*head == NULL)
+    {
+        printf("List is empty cannot perform at delete at last operation\n");
+    }
+    else if ((*head) -> link == NULL)
+    {
+        free(*head);
+        *head = NULL;
+        printf("Last node deleted successfully\n");
+
+    }
+    else
+    {
+        struct node *temp = *head;
+       struct node *prev = NULL;
+
+        while(temp -> link  != NULL)
+        {
+            prev = temp;
+            temp = temp ->link;
+        }
+        prev->link = NULL; // Update the previous node's link
+        free(temp); // Free the memory of the last node
+        printf("Last node deleted successfully\n");
+    }
+}
+
+void print_list(struct node *head)
+{
+    if (head == NULL)
+    {
+        printf("List is empty:(\n");
+    }
+    else
+    {
+        while (head != NULL)
+        {
+            printf("%d ", head->data);
+            head = head->link;
+        }
+        printf("\n");
+    }
+}
+
+int main()
+{
+    int ch;
+    int data, data1, new_data, new_data1,key;
+    struct node *head = NULL;
+    while (1)
+    {
+        printf("1. insert_at_last()\n");
+        printf("2. insert_at_first\n");
+        printf("3. insert_after\n");
+        printf("4. insert_before\n");
+        printf("5. search_elemnt\n");
+        printf("6. sort_list\n");
+        printf("7. print list\n");
+        printf("8. delete_at_first\n");
+        printf("9. delete_at_last\n ");
+        printf("10. exit\n");
+        printf("Enter a choice: ");
+        scanf("%d", &ch);
+        switch (ch)
+        {
+        case 1:
+            printf("Enter the data to insert at last: ");
+            scanf("%d", &data);
+            insert_at_last(&head, data);
+            break;
+        case 2:
+            printf("Enter the data to insert at first: ");
+            scanf("%d", &data1);
+            insert_at_first(&head, data1);
+            break;
+        case 3:
+            printf("Enter the data to insert after a given data: ");
+            int given_data=10;
+            scanf("%d", &given_data);
+            printf("Enter the new data: ");
+            scanf("%d", &new_data);
+            insert_after(&head, given_data, new_data);
+            break;
+        case 4:
+            printf("Enter the data to insert before a given data: ");
+            scanf("%d", &given_data);
+            printf("Enter the new data: ");
+            scanf("%d", &new_data1);
+            insert_before(&head, given_data, new_data1);
+            break;
+        case 5:
+            printf("Enter the element to search in the list: \n");
+            scanf("%d: ", &key);
+            search_element(&head,key);
+            break;
+        case 6:
+            sort_list(&head);
+            break;
+        case 7:
+            print_list(head);
+            break;
+        case 8:
+           delete_at_first(&head);
+            break;
+        case 9:
+           delete_at_last(&head);
+            break;
+        case 10:
+            exit(0);
+        default:
+            printf("Error: Invalid Input, enter a correct choice\n");
+        }
+    }
+}
