@@ -1,0 +1,56 @@
+// Quick_sort
+#include <stdio.h>
+int quick_sort(int *arr, int first,int last);
+int partition(int arr[], int first,int last);
+
+int main() 
+{
+    int size;
+    printf("Enter the size of an array:");
+    scanf("%d", &size);
+    int arr[size];
+    printf("Enter the unsorted array elemnt:");
+    for(int i =0; i< size; i++)
+    {
+        scanf("%d", &arr[i]);
+    }
+    quick_sort(arr,0,size - 1 );
+    printf("After sorting elemts are:");
+         for(int i = 0; i < size; i++)
+         {
+             printf("%d ", arr[i]);
+         }
+         return 0;
+    
+}
+int quick_sort(int *arr, int first,int last )
+{
+    int pivindex;
+    if (first < last)
+    {
+        pivindex = partition(arr, first,last);
+        quick_sort(arr,first, (pivindex-1) );
+         quick_sort(arr,  (pivindex +1), last );
+    }
+    return 0;
+}
+
+int partition(int arr[], int first,int last)
+{
+    int pivot = arr[first];
+    int i = first;
+    for (int j = first + 1; j <= last; j++)
+    {
+        if (arr[j] <= pivot)
+        {
+            i = i+1;
+            int temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+        }
+    }
+    int temp = arr[i];
+    arr[i] = arr[first];
+    arr[first] = temp;
+    return i;
+}
