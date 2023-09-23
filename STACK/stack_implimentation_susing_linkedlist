@@ -1,0 +1,95 @@
+/* stack using linked list*/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int data;
+    struct node *link;
+};
+
+void push(struct node **top, int data)
+{
+    struct node *new_node = malloc(sizeof(struct node));
+    if (new_node == NULL)
+    {
+        printf("Node is not created:)\n");
+    }
+    else
+    {
+        new_node->data = data;
+        new_node->link = *top; // Set the new node's link to the current top
+        *top = new_node; // Update the top pointer to the new node
+        printf("Push operation successfully completed\n");
+    }
+}
+
+void pop(struct node **top)
+{
+    if (*top == NULL)
+    {
+        printf("Stack is empty, cannot perform pop operation\n");
+    }
+    else
+    {
+        struct node *temp = *top;
+        *top = (*top)->link; // Update the top pointer to the next node
+        free(temp); // Free the memory of the popped node
+        printf("Pop operation successfully completed\n");
+    }
+}
+
+void print_stack(struct node *top)
+{
+    struct node *temp = top;
+    if (temp == NULL)
+    {
+        printf("Stack is empty:(\n");
+    }
+    else
+    {
+        printf("Stack contents: ");
+        while (temp != NULL)
+        {
+            printf("%d ", temp->data);
+            temp = temp->link;
+        }
+        printf("\n");
+    }
+}
+
+int main()
+{
+    int ch;
+    int data;
+    struct node *top = NULL;
+    while (1)
+    {
+        printf("1. Push\n");
+        printf("2. Pop\n");
+        printf("3. Print Stack\n");
+        printf("4. Exit\n");
+        printf("Enter a choice: ");
+        scanf("%d", &ch);
+        switch (ch)
+        {
+        case 1:
+            printf("Enter the data to push onto the stack: ");
+            scanf("%d", &data);
+            push(&top, data);
+            break;
+        case 2:
+            pop(&top);
+            break;
+        case 3:
+            print_stack(top);
+            break;
+        case 4:
+            exit(0);
+        default:
+            printf("Invalid choice\n");
+        }
+    }
+    return 0;
+}
