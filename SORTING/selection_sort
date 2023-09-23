@@ -1,0 +1,87 @@
+#include<stdio.h>
+void selecton_sort(int *arr, int size);
+int main()
+{
+    int size;
+    printf("Enter the size");
+    scanf("%d", &size);
+    int arr[size];
+    printf("Enter arrau elemts: ");
+    for(int i = 0;i<size;i++)
+    {
+        scanf("%d",&arr[i]);
+    }
+    selecton_sort(arr,size);
+    return 0;
+    
+}
+
+
+void selecton_sort(int *arr, int size)
+{
+    for(int i = 0 ; i <size - 1 ;i++)
+    {
+        for(int j = i + 1; i<size;i++)
+        {
+            if(arr[j] < arr[i])
+            {
+                int temp = arr[j];
+                arr[j] = arr[i];
+                arr[i] = temp;
+                
+                
+            }
+        }
+        
+    }
+    printf("After sorting elenys are:");
+    for(int i = 0;i<size;i++)
+    {
+        printf("%d ",arr[i]);
+    }
+    return 0;
+}-----------------------------------------------------------------
+
+
+#include <stdio.h>
+int selection_sort(int *arr, int size);
+
+int main() 
+{
+    int size;
+    printf("Enter the size of an array: ");
+    scanf("%d", &size);
+    int arr[size];
+    printf("Enter the unsorted array elements: ");
+    for (int i = 0; i < size; i++)
+    {
+        scanf("%d", &arr[i]);
+    }
+    selection_sort(arr, size);
+    printf("Sorted array elements: ");
+    for (int i = 0; i < size; i++)
+    {
+        printf("%d ", arr[i]); // Add a space after each element
+    }
+    return 0;
+}
+
+int selection_sort(int *arr, int size)
+{
+    for (int i = 0; i < size - 1; i++)
+    {
+        int min = i;
+        for (int j = i + 1; j < size; j++)
+        {
+            if (arr[j] < arr[min])
+            {
+                min = j;
+            }
+        }
+        int temp = arr[i];
+        arr[i] = arr[min];
+        arr[min] = temp;
+    }
+    return 0;
+}
+
