@@ -1,0 +1,136 @@
+/*Queue: it is a abstract data type,queue is a linear data structure 
+which follows FIFO principle.
+QUEUE is aordered list of elements,where on element is inseted at one end and removed from another end
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct queue
+{
+    int front;
+    int rear;
+    int size;
+    int *linear_queue;
+};
+
+int isFull(struct queue *q)
+{
+    return (q->rear == q->size - 1);
+}
+
+int isEmpty(struct queue *q)
+{
+    return (q->front == -1);
+}
+
+void create_queue(struct queue *q, int size)
+{
+    q->front = -1;
+    q->rear = -1;
+    q->size = size;
+    q->linear_queue = malloc(sizeof(int) * size); // Use int instead of struct queue
+    if (q->linear_queue == NULL)
+    {
+        printf("Memory is not allocated\n");
+        exit(1);
+    }
+}
+
+void enqueue(struct queue *q, int data)
+{
+    if (isFull(q))
+    {
+        printf("Queue is full/overflow, cannot perform enqueue operation\n");
+        return;
+    }
+
+    if (isEmpty(q))
+    {
+        q->front = 0;
+    }
+
+    q->rear++;
+    q->linear_queue[q->rear] = data;
+    printf("Enqueue operation successfully completed\n");
+}
+
+void dequeue(struct queue *q)
+{
+    if (isEmpty(q))
+    {
+        printf("Queue is empty/underflow, cannot dequeue\n");
+        return;
+    }
+
+    q->front++;
+    
+    // Check if the queue is now empty after dequeue
+    if (q->front > q->rear)
+    {
+        // Reset both front and rear to -1
+        q->front = -1;
+        q->rear = -1;
+    }
+
+    printf("Dequeue operation is successfully completed\n");
+}
+
+
+void print_queue(struct queue *q)
+{
+    if (isEmpty(q))
+    {
+        printf("Queue is empty\n");
+    }
+    else
+    {
+        printf("Queue contents are: ");
+        for (int i = q->front; i <= q->rear; i++)
+        {
+            printf("%d ", q->linear_queue[i]);
+        }
+        printf("\n");
+    }
+}
+
+int main()
+{
+    int choice, data, size;
+    struct queue q;
+
+    printf("Enter the size of the queue: ");
+    scanf("%d", &size);
+    create_queue(&q, size);
+
+    while (1)
+    {
+        printf("1. Enqueue\n");
+        printf("2. Dequeue\n");
+        printf("3. Print Queue\n");
+        printf("4. Exit\n");
+        printf("Enter your choice: \n");
+        scanf("%d", &choice);
+
+        switch (choice)
+        {
+        case 1:
+            printf("Enter the data to enqueue: ");
+            scanf("%d", &data);
+            enqueue(&q, data);
+            break;
+        case 2:
+            dequeue(&q);
+            break;
+        case 3:
+            print_queue(&q);
+            break;
+        case 4:
+            exit(0);
+        default:
+            printf("ERROR: Enter a valid choice\n");
+        }
+    }
+
+    return 0;
+}
