@@ -1,0 +1,117 @@
+/*
+Queue implimentation using linked list
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define a structure for the nodes of the linked list
+struct node {
+    int data;
+    struct node *link;
+};
+
+// Define a structure for the queue
+struct queue {
+    struct node *front;
+    struct node *rear;
+};
+
+// Function to create an empty queue
+void create_queue(struct queue *q) {
+    q->front = q->rear = NULL;
+}
+
+// Function to check if the queue is empty
+int is_empty(struct queue *q) 
+{
+    return q->front == NULL;
+}
+
+// Function to enqueue an element into the queue
+void enqueue_list(struct queue *q, int data) {
+    struct node *new_node = (struct node *)malloc(sizeof(struct node));
+    if (new_node == NULL) {
+        printf("Node is not created\n");
+        exit(1);
+    }
+    new_node->data = data;
+    new_node->link = NULL;
+
+    if (is_empty(q)) {
+        q->rear = q->front = new_node;
+    } else {
+        q->rear->link = new_node;
+        q->rear = new_node;
+    }
+    printf("Enqueue operation successful\n");
+}
+
+// Function to dequeue an element from the queue
+void dequeue_list(struct queue *q) {
+    if (is_empty(q)) {
+        printf("Queue is empty, cannot perform dequeue\n");
+        return;
+    }
+
+    struct node *temp = q->front;
+    q->front = q->front->link;
+    free(temp);
+
+    if (q->front == NULL) {
+        q->rear = NULL;
+    }
+    printf("Dequeue operation successfully completed\n");
+}
+
+// Function to print the contents of the queue
+void print_queue(struct queue *q) {
+    if (is_empty(q)) {
+        printf("Queue is empty\n");
+        return;
+    } else {
+        struct node *current = q->front;
+        printf("Queue contents are: ");
+        while (current != NULL) {
+            printf("%d ", current->data);
+            current = current->link;
+        }
+        printf("\n");
+    }
+}
+
+int main() {
+    int data;
+    int choice;
+    struct queue q;
+    create_queue(&q);
+
+    while (1) {
+        printf("1. Enqueue\n");
+        printf("2. Dequeue\n");
+        printf("3. Print Queue\n");
+        printf("4. Quit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter data to enqueue: ");
+                scanf("%d", &data);
+                enqueue_list(&q, data);
+                break;
+            case 2:
+                dequeue_list(&q);
+                break;
+            case 3:
+                print_queue(&q);
+                break;
+            case 4:
+                exit(0);
+            default:
+                printf("Invalid choice. Try again.\n");
+        }
+    }
+
+    return 0;
+}
