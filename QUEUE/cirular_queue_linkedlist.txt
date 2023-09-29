@@ -1,0 +1,127 @@
+/*
+circular linked list implimentation using linked list
+*/
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define a structure for a node in the circular queue
+struct Node {
+    int data;
+    struct Node *next;
+};
+
+// Define a structure for the circular queue
+struct CircularQueue {
+    struct Node *front;
+    struct Node *rear;
+};
+
+// Function to create an empty circular queue
+void createQueue(struct CircularQueue *cq) {
+    cq->front = cq->rear = NULL;
+}
+
+// Function to check if the circular queue is empty
+int isEmpty(struct CircularQueue *cq) {
+    return cq->front == NULL;
+}
+
+// Function to enqueue an element into the circular queue
+void enqueue(struct CircularQueue *cq, int data) 
+{
+    struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
+    if (newNode == NULL) 
+    {
+        printf("Memory allocation failed\n");
+        exit(1);
+    }
+    newNode->data = data;
+    newNode->next = NULL;
+
+    if (isEmpty(cq)) {
+        cq->front = cq->rear = newNode;
+        cq->rear->next = cq->front; // Make it circular
+    } 
+    else 
+    {
+        cq->rear->next = newNode;
+        cq->rear = newNode;
+        cq->rear->next = cq->front; // Make it circular
+    }
+    printf("Enqueue is succesfull\n");
+}
+
+// Function to dequeue an element from the circular queue
+void dequeue(struct CircularQueue *cq) {
+    if (isEmpty(cq)) {
+        printf("Queue is empty, cannot perform dequeue operation\n");
+        exit(1);
+    }
+
+    int data;
+    struct Node *temp = cq->front;
+
+    if (cq->front == cq->rear) {
+        cq->front = cq->rear = NULL;
+    } else {
+        cq->front = cq->front->next;
+        cq->rear->next = cq->front; // Make it circular
+    }
+
+    data = temp->data;
+    free(temp);
+    printf("Dequeue operation is succesully completed\n");
+   
+}
+
+// Function to print the circular queue
+void printQueue(struct CircularQueue *cq) {
+    if (isEmpty(cq)) {
+        printf("Queue is empty\n");
+        return;
+    }
+
+    struct Node *current = cq->front;
+    printf("Circular Queue contents: ");
+    do {
+        printf("%d ", current->data);
+        current = current->next;
+    } while (current != cq->front);
+
+    printf("\n");
+}
+
+int main() {
+    struct CircularQueue cq;
+    createQueue(&cq);
+    int choice, data;
+
+    while (1) {
+        printf("1. Enqueue\n");
+        printf("2. Dequeue\n");
+        printf("3. Print Queue\n");
+        printf("4. Quit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter data to enqueue: ");
+                scanf("%d", &data);
+                enqueue(&cq, data);
+                break;
+            case 2:
+                 dequeue(&cq);
+                break;
+            case 3:
+                printQueue(&cq);
+                break;
+            case 4:
+                exit(0);
+            default:
+                printf("Invalid choice. Try again.\n");
+        }
+    }
+
+    return 0;
+}
