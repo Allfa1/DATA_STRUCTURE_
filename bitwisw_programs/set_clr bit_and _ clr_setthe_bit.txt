@@ -1,0 +1,58 @@
+/* write a program if a bit is set clear that bit (or) set that bit? 
+ */
+#include <stdio.h>
+#define CLR_BIT(num, pos)  (num & ~(1<< pos))
+#define SET_BIT(num, pos)  (num | 1<< pos)
+int main()
+{
+    int num,pos;
+    printf("Enter a number: ");
+    scanf("%d", &num);
+    if (num > 0)
+    {
+        for(int i =31; i >=0; i--)
+        {
+            printf("%d",(num>>i)&01);
+            if(i% 8 == 0)
+            {
+                printf(" ");
+            }
+        }
+        printf("\n");
+    }
+    printf("Enter the bit position to cheack: ");
+    scanf("%d",&pos);
+    int bit = (num >> pos) & 1;
+    if (bit == 1) 
+    {
+        printf("Bit at position %d is setbit .\n", pos);
+        num = num & ~(1 << pos);
+        printf("After clearing  a set bit number is : \n");
+        for(int i =31; i >=0; i--)
+        {
+            printf("%d",(num>>i)&01);
+            if(i% 8 == 0)
+            {
+                printf(" ");
+            }
+        }
+        printf("\n");
+    }
+    else 
+    {
+        printf("Bit at position %d is cleare bit.\n", pos);
+        num = num | 1<< pos;
+        printf("After stting a clr bit number is : \n");
+        for(int i =31; i >=0; i--)
+        {
+            printf("%d",(num>>i)&01);
+            if(i% 8 == 0)
+            {
+                printf(" ");
+            }
+        }
+        printf("\n");
+        
+    }
+    return 0;
+}
