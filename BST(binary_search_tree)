@@ -1,1 +1,161 @@
 
+/* Binary search tree implimentation:
+Tree:is a collection of nodes which are linked together and stimulates a hirarchy ex file system
+Binary tree : where each node consist of at moast two children(0 1 2) *
+BST(binary search tree: in BST all node of left subtree are less then root and all the node of right subtree ar greater then root ,duplicay not allowed
+TRAVERSAL:1) inorder-----left 
+                         parent
+                         right
+           2)postorder---left 
+                         right
+                         parent
+           3)preorder----parent
+                         left
+                         right
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct tree
+{
+    int data;
+    struct tree *LC;
+    struct tree *RC;
+};
+
+void insert_bst(struct tree **root, int data)
+{
+    struct tree *new_node = malloc(sizeof(struct tree));
+    if (new_node == NULL)
+    {
+        printf("Memory is not allocated \n");
+        exit(1);
+    }
+    else
+    {
+        new_node->data = data;
+        new_node->LC = NULL;
+        new_node->RC = NULL;
+    }
+
+    if (*root == NULL)
+    {
+        *root = new_node;
+        printf("Data added successfully in BST\n");
+    }
+    else
+    {
+        struct tree *temp = *root;
+        while (temp != NULL)
+        {
+            if (data < temp->data)
+            {
+                if (temp->LC == NULL)
+                {
+                    temp->LC = new_node;
+                    break;
+                }
+                else
+                {
+                    temp = temp->LC;
+                }
+            }
+            else if (data > temp->data)
+            {
+                if (temp->RC == NULL)
+                {
+                    temp->RC = new_node;
+                    break;
+                }
+                else
+                {
+                    temp = temp->RC;
+                }
+            }
+            else
+            {
+                printf("Duplicate data found. Ignoring.\n");
+                break;
+            }
+        }
+    }
+}
+
+void inorder_traversal(struct tree *root)
+{
+    if (root != NULL)
+    {
+        inorder_traversal(root->LC);
+        printf("%d,", root->data);
+        inorder_traversal(root->RC);
+    }
+}
+void post_traversal(struct tree *root)
+{
+    if(root != NULL)
+    {
+        post_traversal(root->LC);
+        post_traversal(root->RC);
+        printf("%d,", root->data);
+    }
+}
+void pre_traversal(struct tree*root)
+{
+    if (root != NULL)
+    {
+        printf("%d, ",root->data);
+        pre_traversal(root->LC);
+        pre_traversal(root ->RC);
+    }
+}
+
+int main()
+{
+    struct tree *root = NULL;
+    int data, choice;
+
+    printf("1. Insert into binary search tree\n");
+    printf("2. Print binary tree in_order()\n");
+    printf("3. Print binary tree post_order()\n");
+    printf("4. Print binary tree pre_order()\n");
+    printf("5. Print binary tree level_order()\n");
+ 
+
+    while (1)
+    {
+        printf("Enter the choice: ");
+        scanf("%d", &choice);
+
+        switch (choice)
+        {
+        case 1:
+            printf("Enter the data to insert in the binary search tree: ");
+            scanf("%d", &data);
+            insert_bst(&root, data);
+            break;
+        case 2:
+            printf("Binary tree elements (in-order): ");
+            inorder_traversal(root);
+            printf("\n");
+            break;
+            
+        case 3:
+            printf("Binary tree elements (post-order): ");
+            post_traversal(root);
+            printf("\n");
+            break;
+            
+        case 4:
+            printf("Binary tree elements (pre-order): ");
+            pre_traversal(root);
+            printf("\n");
+            break;
+        default:
+            printf("Invalid choice.\n");
+            break;
+        }
+    }
+
+    return 0;
+}
