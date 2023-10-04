@@ -1,0 +1,280 @@
+/* Binary search tree implimentation:
+Tree:is a collection of nodes which are linked together and stimulates a hirarchy ex file system
+Binary tree : where each node consist of at moast two children(0 1 2) *
+BST(binary search tree: in BST all node of left subtree are less then root and all the node of right subtree ar greater then root ,duplicay not allowed
+TRAVERSAL:1) inorder-----left 
+                         parent
+                         right
+           2)postorder---left 
+                         right
+                         parent
+           3)preorder----parent
+                         left
+                         right
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct tree
+{
+    int data;
+    struct tree *LC;
+    struct tree *RC;
+};
+
+void insert_bst(struct tree **root, int data)
+{
+    struct tree *new_node = malloc(sizeof(struct tree));
+    if (new_node == NULL)
+    {
+        printf("Memory is not allocated \n");
+        exit(1);
+    }
+    else
+    {
+        new_node->data = data;
+        new_node->LC = NULL;
+        new_node->RC = NULL;
+    }
+
+    if (*root == NULL)
+    {
+        *root = new_node;
+        printf("Data added successfully in BST\n");
+    }
+    else
+    {
+        struct tree *temp = *root;
+        while (temp != NULL)
+        {
+            if (data < temp->data)
+            {
+                if (temp->LC == NULL)
+                {
+                    temp->LC = new_node;
+                    break;
+                }
+                else
+                {
+                    temp = temp->LC;
+                }
+            }
+            else if (data > temp->data)
+            {
+                if (temp->RC == NULL)
+                {
+                    temp->RC = new_node;
+                    break;
+                }
+                else
+                {
+                    temp = temp->RC;
+                }
+            }
+            else
+            {
+                printf("Duplicate data found. Ignoring.\n");
+                break;
+            }
+        }
+    }
+}
+
+void inorder_traversal(struct tree *root)
+{
+    if (root != NULL)
+    {
+        inorder_traversal(root->LC);
+        printf("%d,", root->data);
+        inorder_traversal(root->RC);
+    }
+}
+void post_traversal(struct tree *root)
+{
+    if(root != NULL)
+    {
+        post_traversal(root->LC);
+        post_traversal(root->RC);
+        printf("%d,", root->data);
+    }
+}
+void pre_traversal(struct tree*root)
+{
+    if (root != NULL)
+    {
+        printf("%d, ",root->data);
+        pre_traversal(root->LC);
+        pre_traversal(root ->RC);
+    }
+}
+void BST_search(struct tree **root,int key)
+{
+    int i = 0;
+    if (*root == NULL)
+    {
+        printf("BST is empty,cannot search an elemnt :\n");
+    }
+    else
+    {
+        struct tree *temp = *root;
+        while(temp != NULL)
+        {
+            if( key < temp->data)
+            {
+                temp = temp->LC;
+            }
+            else if (key > temp ->data)
+            {
+                temp = temp ->RC;
+            }
+            else
+            {
+          printf("Element %d is found in the tree at index %d.\n", 
+          key, i);
+                return;
+            }
+            i++;
+        }
+        printf("Search elemnt is not found in BST:\n");
+    }
+}
+void BST_minimum(struct tree *root)
+{
+    if (root == NULL)
+    {
+        printf("Tree is empty:\n");
+    }
+    while(root -> LC != NULL)
+    {
+         root = root -> LC;
+    }
+    printf("Minimum element in BST: %d\n", root->data);
+}
+void BST_maximum(struct tree *root)
+{
+    if (root == NULL)
+    {
+        printf("Tree is empty:\n");
+    }
+    while(root -> RC != NULL)
+    {
+         root = root -> RC;
+    }
+    printf("Maximum element in BST: %d\n", root->data);
+}
+ int BST_height(struct tree *root)
+ {
+     if (root == NULL)
+     {
+         printf("tree is empty:\n");
+         return 0;
+     }
+     else
+     {
+         int left_height;
+         int right_height;
+         left_height = BST_height(root -> LC);
+         right_height=BST_height(root -> RC);
+         if(left_height > right_height)
+         {
+             return (left_height+1);
+         }
+         else
+         {
+             return (right_height+1);
+         }
+     }
+ }
+int BST_total_nodes(struct tree *root)
+{
+    if (root == NULL)
+    {
+        printf("Tree is empty;\n");
+        return 0;
+    }
+    else
+    {
+         return 1 + BST_total_nodes(root->LC) + BST_total_nodes(root->RC);
+    }
+}
+
+ 
+ 
+int main()
+{
+    struct tree *root = NULL;
+    int data, choice,key;
+
+    printf("1. Insert into binary search tree\n");
+    printf("2.  in_order()\n");
+    printf("3. post_order()\n");
+    printf("4.pre_order()\n");
+    printf("5. BST_search():\n");
+    printf("6.BST_minimum()\n");
+    printf("7.BST_maximum()\n");
+    printf("8.BST_height()\n");
+    printf("9.BST_total_nodes()\n");
+    printf("10.Quit()\n");
+    
+
+    while (1)
+    {
+        printf("Enter the choice: ");
+        scanf("%d", &choice);
+
+        switch (choice)
+        {
+        case 1:
+            printf("Enter the data to insert in BST: ");
+            scanf("%d", &data);
+            insert_bst(&root, data);
+            break;
+        case 2:
+            printf("Binary tree elements (in-order): ");
+            inorder_traversal(root);
+            printf("\n");
+            break;
+            
+        case 3:
+            printf("Binary tree elements (post-order): ");
+            post_traversal(root);
+            printf("\n");
+            break;
+            
+        case 4:
+            printf("Binary tree elements (pre-order): ");
+            pre_traversal(root);
+            printf("\n");
+            break;
+        case 5:
+               printf("Enter the key element to search in BST:\n");
+               scanf("%d",&key);
+               BST_search(&root,key);
+               break;
+    
+        case 6:
+              BST_minimum(root);
+              break;
+         case 7:
+              BST_maximum(root);
+              break;
+        case 8:
+               int height = BST_height(root);
+                printf("Height of BST: %d\n", height);
+                break;
+        case 9:
+        int total_nodes = BST_total_nodes(root);
+                printf("Total nodes in BST: %d\n", total_nodes);
+              
+        case 10:
+               exit(0);
+               
+        default:
+            printf("Invalid choice.\n");
+            break;
+        }
+    }
+
+    return 0;
+}
