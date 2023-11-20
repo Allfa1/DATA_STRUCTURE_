@@ -1,0 +1,117 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node 
+{
+    int data;
+    struct node *link;
+};
+void create_list(struct node **head,int data)
+{
+    struct node *new_node = malloc(sizeof(struct node));
+    if(new_node == NULL)
+    {
+        printf("Memory is not allocated:");
+    }
+    new_node->data = data;
+    new_node->link = NULL;
+    if(*head == NULL)
+    {
+        *head = new_node;
+        printf("Nodded added at last succesfully:\n");
+    }
+    else
+    {
+        struct node *temp = *head;
+        while(temp->link != NULL)
+        {
+            temp = temp->link;
+        }
+        temp->link = new_node;
+        printf("node added at last succesfully\n");
+    }
+}
+void midd_element_list(struct node **head)
+{
+    if (*head == NULL)
+    {
+        printf("List is empty");
+    }
+    struct node *fast = *head;
+    struct node *slow = *head;
+    while((fast != NULL) && fast->link != NULL)
+    {
+        fast = fast->link->link;
+        slow = slow ->link;
+    }
+    printf("Middle elemnt is a list is %d\n: ",slow->data);
+    
+}
+void detect_loop(struct node **head)
+{
+    if(*head == NULL)
+    {
+        printf("List is empty");
+    }
+    struct node *fast = *head;
+    struct node *slow = *head;
+    while((fast != NULL) &&(fast->link!=NULL))
+    {
+        fast = fast ->link->link;
+        slow = slow->link;
+    }
+    if(fast == slow)
+    {
+        printf("loop detected :");
+    }
+    else
+    {
+        printf("no loop detected:");
+    }
+    printf("\n");
+}
+
+ void print_list(struct node *head)
+ {
+     if (head == NULL)
+     {
+         printf("List is empty:");
+     }
+     while(head != NULL)
+     {
+         printf("%d ",head->data);
+         head =head ->link;
+     }
+  printf("\n");
+ }
+int main()
+{
+    struct node *head = NULL;
+    int ch,data;
+    while(1)
+    {
+        printf("1.create_list(last)\n2.find middle elent in a list\n3. detect loop\n4.print list\n");
+        printf("enter the choice: ");
+        
+        scanf("%d",&ch);
+        switch(ch)
+        {
+            case 1:
+            printf("Enter data to insert at last in list :");
+            scanf("%d",&data);
+            create_list(&head,data);
+            break;
+            case 2:
+            midd_element_list(&head);
+            break;
+            case 3:
+            detect_loop(&head);
+            break;
+            case 4: print_list(head);
+            break;
+            
+        }
+    }
+}
+
+   
