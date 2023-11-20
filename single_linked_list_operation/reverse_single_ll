@@ -1,62 +1,81 @@
-// Online C compiler to run C program online
 #include <stdio.h>
-#include<stdlib.h>
+#include <stdlib.h>
+
 struct node 
 {
     int data;
     struct node *link;
 };
-void create_list(struct node **head,int data)
+
+void create_list(struct node **head, int data)
 {
     struct node *temp = *head;
-    struct node *new_node =malloc(sizeof(struct node));
-    if(new_node == NULL)
+    struct node *new_node = malloc(sizeof(struct node));
+
+    if (new_node == NULL)
     {
-        printf("Memory not allocated ");
+        printf("Memory not allocated\n");
     }
     else
     {
         new_node->data = data;
         new_node->link = NULL;
-        if(*head == NULL)
+
+        if (*head == NULL)
         {
-          *head = new_node;
-            printf("node added at last succesfully:");
+            *head = new_node;
+            printf("Node added at last successfully.\n");
         }
         else
         {
-        while(temp->link != NULL)
-        {
-            temp = temp->link;
-            
+            while (temp->link != NULL)
+            {
+                temp = temp->link;
+            }
+            temp->link = new_node;
+            printf("Node added at last successfully.\n");
         }
-        temp->link = new_node;
-         printf("node added at last succesfully");
-        }
-        
     }
 }
+
 void reverse_list(struct node **head)
 {
     struct node *current = *head;
     struct node *prev = NULL;
     struct node *next = NULL;
     
-    while(current != NULL)
+    while (current != NULL)
     {
-        next = current -> link;
+        next = current->link;
         current->link = prev;
         prev = current;
         current = next;
     }
     *head = prev;
-    printf("Reverse list is succesfull:");
+    printf("Reverse list is successful.\n");
 }
+
+struct node* reverse_recursively(struct node *head)
+{
+    if (head == NULL || head->link == NULL)
+    {
+        return head;
+    }
+    else
+    {
+        struct node *rev_head = reverse_recursively(head->link);
+        head->link->link = head;
+        head->link = NULL;
+
+        return rev_head;
+    }
+}
+
 void print_list(struct node *head)
 {
     if (head == NULL)
     {
-        printf("List is empty:(\n");
+        printf("List is empty.\n");
     }
     else
     {
@@ -68,30 +87,44 @@ void print_list(struct node *head)
         printf("\n");
     }
 }
+
 int main() 
 {
-    
     struct node *head = NULL;
-    int data,ch;
-    while(1)
+    int data, ch;
+
+    while (1)
     {
         printf("\n");
-    printf("1.creat_list\n2.reverse_list\n3.print_list\n");
-    printf("Enter the choice: ");
-    scanf("%d",&ch);
-    switch(ch)
-    {
-        case 1:
-            printf("enter the data to insert at last :");
-            scanf("%d",&data);
-            create_list(&head,data);
-            break;
-        case 2:
-            reverse_list(&head);
-            break;
-        case 3:
-            print_list(head);
-            break;
+        printf("1. Create List\n2. Reverse List Iteratively\n3. Print List\n4. Reverse Recursively\n5. Exit\n");
+        printf("Enter the choice: ");
+        scanf("%d", &ch);
+
+        switch (ch)
+        {
+            case 1:
+                printf("Enter the data to insert at last: ");
+                scanf("%d", &data);
+                create_list(&head, data);
+                break;
+            case 2:
+                reverse_list(&head);
+                break;
+            case 3:
+                print_list(head);
+                break;
+            case 4:
+                head = reverse_recursively(head);
+                printf("List reversed recursively.\n");
+                break;
+            case 5:
+                printf("Exiting program.\n");
+                exit(0);
+            default:
+                printf("Invalid choice. Please try again.\n");
+        }
     }
-    }
+
+    return 0;
 }
+
